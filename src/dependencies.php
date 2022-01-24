@@ -1,5 +1,6 @@
 <?php
 // DIC configuration
+use Illuminate\Database\Capsule\Manager as Capsule; 
 
 $container = $app->getContainer();
 
@@ -16,4 +17,17 @@ $container['logger'] = function ($c) {
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
+};
+
+// Database
+$container['db'] = function($container){
+    $capsule = new Capsule;
+    $settings = $container->get('settings');
+    $capsule->addConnection( $settings['db'] );
+    // @ Tornar a instância global.
+    $capsule->setAsGlobal();
+    // @ Ferramenta para fazer a comunicação com o BD.
+    $capsule->bootEloquent();
+
+    return $capsule;
 };
