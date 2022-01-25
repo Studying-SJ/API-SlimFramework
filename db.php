@@ -28,7 +28,7 @@ $schema->create($table, function($table){
     $table->text('descricao');
     $table->decimal('preco', 11, 2);
     $table->string('fabricante', 60);
-    $table->date('dt_criacao');
+    $table->timestamps();
 });
 //Populate table
 $db->table($table)->insert([
